@@ -22,6 +22,12 @@ public class ValidLoginTest {
     public static String url = "https://certwcs.frontgate.com/?aka_bypass=5C73514EE7A609054D81DE61DD9CA3D6";
     public static String email = "m.hneef@student.aaup.edu";
     public static String password = "Mi@12345678";
+    By ACCOUNT_BTN = By.cssSelector("button.c-button.t-header__my-account");
+    By LOGIN_LINK = By.linkText("Sign In / Register");
+    By EMAIL = By.cssSelector("input#email");
+    By PASSWORD = By.cssSelector("input#password");
+    By LOGIN_BTN = By.cssSelector("button.login-button.btn.btn-primary");
+    By GREETING_MSG = By.xpath("//*[contains(@class,'welcome')]");
 
     @BeforeTest
     public void setup() {
@@ -37,7 +43,7 @@ public class ValidLoginTest {
 
         // 1. Hover "Account" button
         WebElement accountBtn = wait.until(
-                ExpectedConditions.visibilityOfElementLocated(By.cssSelector("button.c-button.t-header__my-account"))
+                ExpectedConditions.visibilityOfElementLocated(ACCOUNT_BTN)
         );
 
         Actions actions = new Actions(driver);
@@ -45,28 +51,28 @@ public class ValidLoginTest {
 
         // 2. Click "Sign In/Register"
         WebElement signInRegister = wait.until(
-                ExpectedConditions.elementToBeClickable(By.linkText("Sign In / Register"))
+                ExpectedConditions.elementToBeClickable(LOGIN_LINK)
         );
         signInRegister.click();
 
         // 3. Enter valid Email and Password
         WebElement emailField = wait.until(
-                ExpectedConditions.visibilityOfElementLocated(By.cssSelector("input#email"))
+                ExpectedConditions.visibilityOfElementLocated(EMAIL)
         );
         emailField.sendKeys(email);
 
         WebElement passwordField = wait.until(
-                ExpectedConditions.visibilityOfElementLocated(By.cssSelector("input#password"))
+                ExpectedConditions.visibilityOfElementLocated(PASSWORD)
         );
         passwordField.sendKeys(password);
 
         // 4. Click "Sign In"
-        WebElement signInBtn = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("button.login-button.btn.btn-primary")));
+        WebElement signInBtn = wait.until(ExpectedConditions.elementToBeClickable(LOGIN_BTN));
         ((JavascriptExecutor) driver).executeScript("arguments[0].click();", signInBtn);
 
         // ✅ Assertion (verify login success)
         WebElement myAccount = wait.until(
-                ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[contains(@class,'welcome')]"))
+                ExpectedConditions.visibilityOfElementLocated(GREETING_MSG)
         );
 
         Assert.assertTrue(myAccount.isDisplayed(), "Login failed!");
